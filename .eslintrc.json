@@ -42,7 +42,11 @@
             "always"
         ],
         "new-cap": 2,
-        "no-case-declarations": 0
+        "no-case-declarations": 0,
+        "react/prop-types": 0,
+        "react/display-name": 0,
+        "no-unused-vars": 0,
+        "click-events-have-key-events": 0
     },
     "parserOptions": {
         "ecmaVersion": 6,
