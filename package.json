@@ -11,6 +11,7 @@
     "autoprefixer": "^9",
     "awesome-react-icons": "^1.4.7",
     "eslint": "^7.16.0",
+    "firebase": "^8.2.1",
     "history": "^5.0.0",
     "postcss": "^7",
     "react": "^17.0.1",

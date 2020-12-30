@@ -1,0 +1,10 @@
+#seconddiv.coolclass {
+    max-width: 0px;
+    transition: ease-in 0.5s;
+}
+
+#seconddiv{
+    max-width: 300px;
+    transition: ease-out 0.5s;
+}
+   
