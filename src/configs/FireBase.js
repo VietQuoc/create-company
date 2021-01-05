@@ -21,7 +21,7 @@ const googleProvider = new firebase.auth.GoogleAuthProvider()
 const facebookProvider = new firebase.auth.FacebookAuthProvider()
 export const signInWithGoogle = (callback) => {
   auth.signInWithPopup(googleProvider).then((res) => {
-    if (callback) {callback(res.user.email)}
+    if (callback) {callback(res.user)}
   }).catch((error) => {
     if (callback) {callback(false)}
   })
@@ -29,7 +29,7 @@ export const signInWithGoogle = (callback) => {
 
 export const signInWithFacebook = (callback) => {
   auth.signInWithPopup(facebookProvider).then((res) => {
-    if (callback) {callback(res.user)}
+    if (callback) {callback({ ...res.user, accessToken: res.credential.accessToken })}
   }).catch((error) => {
     if (callback) {callback(false)}
   })

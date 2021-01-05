@@ -3,7 +3,7 @@
     "rules": "database.rules.json"
   },
   "hosting": {
-    "site": "create-company",
+    "site": "thanhlapcongty",
     "public": "build",
     "ignore": [
       "firebase.json",

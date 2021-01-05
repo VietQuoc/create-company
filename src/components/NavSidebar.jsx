@@ -1,15 +1,47 @@
 import { Navigation } from 'react-minimal-side-navigation'
 import { useHistory, useLocation } from 'react-router-dom'
 import Icon from 'awesome-react-icons'
+import { useSelector, useDispatch } from 'react-redux'
 import React, { useState } from 'react'
 import { Strings } from '../configs'
 import 'react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css'
 import '../styles/NavSlidebar.css'
+import google from '../assets/google.png'
+import facebook from '../assets/facebook.png'
+import { signInWithFacebook, signInWithGoogle } from '../configs/FireBase'
+import { useWindowDimensions } from '../hooks'
+import { updateUser } from '../store/actions'
 
 export const NavSidebar = () => {
+  const dispatch = useDispatch()
   const history = useHistory()
   const location = useLocation()
+  const user = useSelector(state => state.app.user)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const { height } = useWindowDimensions()
+
+
+  function onFaceLogin() {
+    signInWithFacebook((user) => saveUserData(user))
+  }
+  function onGoogleLogin() {
+    signInWithGoogle((user) => saveUserData(user))
+  }
+
+  function saveUserData(user) {
+    dispatch(updateUser({
+      displayName: user.displayName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      photoURL: getUserPhotoUrl(user.photoURL, user.accessToken),
+      accessToken: user.accessToken,
+    }))
+  }
+
+  function getUserPhotoUrl(photoURL, accessToken) {
+    if (accessToken) {return `${photoURL}?access_token=${accessToken}&type=large`}
+    return photoURL
+  }
 
   return (
     <React.Fragment>
@@ -37,10 +69,15 @@ export const NavSidebar = () => {
           isSidebarOpen ? '' : 'coolclass'
         }`}
       >
-        <div className="flex items-center justify-center mt-10 text-center py-6">
-          <span className="mx-2 text-2xl font-semibold text-black">
-            Welcome
-          </span>
+        <div className="flex items-center justify-center text-center py-6" style={{ flexDirection: 'column' }}>
+          {user && <img 
+            src={user.photoURL}
+            style={{ borderRadius: 50, width: 100, height: 100 }}
+            alt="new"
+          />}
+          {user && <span className="mx-2 text-2xl font-semibold text-red-300">{user.displayName}</span>}
+          {user && <span className="mx-1 text-xs font-semibold text-gray-600">{user.email}</span>}
+          {!user && <span className="mx-2 text-2xl font-semibold text-black">Welcome</span>}
         </div>
         {isSidebarOpen && <Navigation
           activeItemId={location.pathname}
@@ -87,22 +124,15 @@ export const NavSidebar = () => {
             },
           ]}
         />}
-        
-        <div className="absolute bottom-0 w-full my-8">
-          <Navigation
-            activeItemId={location.pathname}
-            items={[
-              {
-                title: 'Home',
-                itemId: '/',
-                elemBefore: () => <Icon name="activity" />
-              }
-            ]}
-            onSelect={({ itemId }) => {
-              history.push(itemId)
-            }}
-          />
-        </div>
+        {height >= 400 && !user &&<div style={{ position: 'absolute', bottom: 10, alignItems: 'center', marginLeft: 20, marginRight: 20 }}>
+          <p style={{ textAlign: 'center' }}>Login!</p>
+          <button className="loginButton" onClick={onGoogleLogin}>
+            <img src={google} />
+          </button>
+          <button className="loginButton" onClick={onFaceLogin} >
+            <img src={facebook} />
+          </button>
+        </div>}
       </div>
     </React.Fragment>
   )
