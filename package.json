@@ -12,7 +12,7 @@
     "autoprefixer": "^9",
     "awesome-react-icons": "^1.4.7",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.16.0",
+    "eslint": "^7.32.0",
     "firebase": "^8.2.1",
     "history": "^5.0.0",
     "postcss": "^7",
